@@ -69,7 +69,7 @@
         for (var i in names) {
           var iOK = false;
           for (var j in jielong) {
-            var tryA = jielong[j];
+            var tryA = jielong[j].replace(/\([^\(^\)]*\)/g, '').replace(/（[^（^）]*）/g, '');
             var tryB = tryA.replace('爸爸', '').replace('妈妈', '').replace('家长', '').trim();
             var tryC = tryB.replace('的', '').trim();
             var tries = [tryA, tryB, tryC];
