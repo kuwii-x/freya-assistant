@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="查看接龙里还差谁">
+    <meta name="author" content="kuwii">
+    <title>接龙还差谁</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+
+  <body>
+    <header class="p-3 bg-dark text-white">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li>接龙里还差谁</li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <br />
+
+    <div class="container">
+      <div class="input-group mb-3">
+        <span class="input-group-text">学生名单 <br />（一个名字一行）</span>
+        <textarea id="names" class="form-control" aria-label="With textarea"></textarea>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">接龙名单 <br />（一次接龙一行）</span>
+        <textarea id="jielong" class="form-control" aria-label="With textarea"></textarea>
+      </div>
+      <div class="input-group mb-3 d-grid gap-2">
+        <button id="check" type="button" class="btn btn-primary">还 有 谁 ？</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card">
+        <div class="card-body">
+          <p id="result"></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+
+    <script>
+      $('#check').click(function() {
+        // values
+        var valueOfNames = $('#names').val().split('\n');
+        var valueOfJielong = $('#jielong').val().split('\n');
+
+        // get names
+        names = [];
+        for (var i in valueOfNames) {
+          names.push(valueOfNames[i].trim());
+        }
+
+        // get jielong
+        jielong = [];
+        for (var i in valueOfJielong) {
+          jielong.push(valueOfJielong[i].replace(/[0-9.]/g, '').trim());
+        }
+
+        // get result
+        result = []
+        for (var i in names) {
+          var iOK = false;
+          for (var j in jielong) {
+            var tryA = jielong[j];
+            var tryB = tryA.replace('爸爸', '').replace('妈妈', '').replace('家长', '').trim();
+            var tryC = tryB.replace('的', '').trim();
+            var tries = [tryA, tryB, tryC];
+            var jOK = false;
+            for (var k in tries) {
+              if (names[i] == tries[k]) {
+                jOK = true;
+                break;
+              }
+              if (names[i].substring(1) == tries[k]) {
+                jOK = true;
+                break;
+              }
+            }
+            if (jOK) {
+              iOK = true;
+              break;
+            }
+          }
+          if (!iOK) {
+            result.push(names[i]);
+          }
+        }
+
+        $('#result').text(result);
+      });
+    </script>
+
+  </body>
+</html>
